@@ -1,0 +1,27 @@
+{
+  "scripts": {
+    "precommit": "npm test",
+    "prepush": "npm test",
+    "test": "standard"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "gulp": "^3.9.1",
+    "gulp-closure-compiler": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.6.1",
+    "gulp-rimraf": "^0.2.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-unzip": "^0.2.0",
+    "gulp-webserver": "^0.9.1",
+    "gulp-zip": "^4.0.0",
+    "jshint": "^2.9.5",
+    "husky": "^0.14.3",
+    "standard": "^10.0.3"
+  },
+  "dependencies": {
+  }
+}
