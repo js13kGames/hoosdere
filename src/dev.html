@@ -6,18 +6,26 @@
       body {
         margin: 0px;
         padding: 0px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         height: 100vh;
+        background: black;
+        overflow: hidden;
       }
-      canvas {
-        border: solid;
+      body::after, body::before {
+        content: '.,..,..,.';
+        color: white;
+        font-size: 29vh;
+        filter: blur(38px);
+        letter-spacing: 60px;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -75%);
+        left: 50%;
+      }
+      body::after {
+        letter-spacing: 15px;
       }
     </style>
   </head>
-  <body>
-    <canvas id="mainCanvas" width="640" height="640"></canvas>
-    <script src="src/hoosdere.js" />
-  </body>
+  <body></body>
+  <script src="src/hoosdere.js" />
 </html>
