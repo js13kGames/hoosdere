@@ -2,7 +2,8 @@
   "scripts": {
     "precommit": "npm test",
     "prepush": "npm test",
-    "test": "standard"
+    "test": "standard",
+    "build": "gulp build" 
   },
   "devDependencies": {
     "cheerio": "^1.0.0-rc.2",

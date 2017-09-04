@@ -1,173 +1,161 @@
-var fs = require('fs'),
-    cheerio = require('cheerio'),
-    gulp = require('gulp'),
-    concat = require('gulp-concat'),
-    htmlmin = require('gulp-htmlmin'),
-    rimraf = require('gulp-rimraf'),
-    rename = require('gulp-rename'),
-    replace = require('gulp-replace'),
-    webserver = require('gulp-webserver'),
-    uglify = require('gulp-uglify'),
-    unzip = require('gulp-unzip'),
-    zip = require('gulp-zip'),
-    exclude_min = [],
-    config = { js: [] };
+const fs = require('fs')
+const cheerio = require('cheerio')
+const gulp = require('gulp')
+const concat = require('gulp-concat')
+const htmlmin = require('gulp-htmlmin')
+const rimraf = require('gulp-rimraf')
+const rename = require('gulp-rename')
+const replace = require('gulp-replace')
+const webserver = require('gulp-webserver')
+const uglify = require('gulp-uglify')
+const unzip = require('gulp-unzip')
+const zip = require('gulp-zip')
+const excludeMin = []
+const config = { js: [] }
+const mainHTML = 'src/index.html'
 
+gulp.task('build', ['initbuild', 'jsmin', 'addjs', 'copy', 'zip', 'unzip', 'clean', 'report'])
 
-gulp.task('build', ['initbuild', 'jsmin', 'addjs', 'copy', 'zip', 'unzip', 'clean', 'report']);
-
-
-gulp.task('serve', function() {
+gulp.task('serve', function () {
   gulp.src('./src')
     .pipe(webserver({
       livereload: true,
       host: 'localhost',
       port: 8013,
       open: true
-    }));
-});
+    }))
+})
 
-
-gulp.task('initbuild', function() {
-
-  var stream, html, $, src, js = [];
+// Cleanup build files
+// Create list of js files
+gulp.task('initbuild', function () {
+  let html = []
+  let $ = []
+  let src = []
+  let js = []
 
   // delete prev files
-  stream = gulp.src('game.zip')
-        .pipe(rimraf());
+  gulp.src('game.zip').pipe(rimraf())
 
-  stream = gulp.src('g.js')
-        .pipe(rimraf());
+  gulp.src('g.js').pipe(rimraf())
 
-  stream = gulp.src('index.html')
-        .pipe(rimraf());
-
+  gulp.src('index.html').pipe(rimraf())
 
   // get a list of all js scripts from our dev file
-  html = fs.readFileSync('dev.html', 'utf-8', function(e, data) {
-    return data;
-  });
+  html = fs.readFileSync(mainHTML, 'utf-8', function (e, data) {
+    return data
+  })
 
-  $ = cheerio.load(html);
+  $ = cheerio.load(html)
 
-  $('script').each(function() {
-    src = $(this).attr('src');
-    if (exclude_min.indexOf(src) === -1) {
-      js.push(src);
+  $('script').each(function () {
+    src = $(this).attr('src')
+    if (excludeMin.indexOf(src) === -1) {
+      js.push(src)
     }
-  });
+  })
 
-  config.js = js;
-  console.log(js);
+  config.js = js
+  console.log(js)
+})
 
-});
-
-gulp.task('jsmin', ['initbuild'], function() {
-
+gulp.task('jsmin', ['initbuild'], function () {
   var stream = gulp.src(config.js)
     .pipe(concat('g.js'))
     .pipe(uglify())
-    .pipe(gulp.dest('.'));
+    .pipe(gulp.dest('.'))
 
-  return stream;
+  return stream
+})
 
-});
+gulp.task('addjs', ['jsmin'], function () {
+  var js = fs.readFileSync('g.js', 'utf-8', function (e, data) {
+    return data
+  })
 
-gulp.task('addjs', ['jsmin'], function() {
+  let i
+  let extraJS = ''
 
-    var js = fs.readFileSync('g.js', 'utf-8', function(e, data) {
-      return data;
-    });
+  for (i = 0; i < excludeMin.length; i += 1) {
+    console.log(excludeMin[i])
+    extraJS += fs.readFileSync(excludeMin[i], 'utf-8', function (e, data) {
+      return data
+    })
+  }
+  console.log(extraJS.length, 'OK', excludeMin)
 
-    var i, tmp, extra_js = '';
-
-    for (i = 0; i < exclude_min.length; i += 1) {
-      console.log(exclude_min[i])
-      extra_js += fs.readFileSync(exclude_min[i], 'utf-8', function(e, data) {
-        return data;
-      });
-    }
-    console.log(extra_js.length, 'OK', exclude_min);
-
-    var stream = gulp.src('dev.html')
+  var stream = gulp.src('dev.html')
       .pipe(replace(/<.*?script.*?>.*?<\/.*?script.*?>/igm, ''))
-      .pipe(replace(/<\/body>/igm, '<script>'+extra_js+' '+js+'</script></body>'))
+      .pipe(replace(/<\/body>/igm, '<script>' + extraJS + ' ' + js + '</script></body>'))
       .pipe(htmlmin({collapseWhitespace: true}))
       .pipe(rename('index.html'))
-      .pipe(gulp.dest('./tmp'));
+      .pipe(gulp.dest('./tmp'))
 
-    return stream;
+  return stream
+})
 
-});
+gulp.task('copy', function () {
+  var stream = gulp.src('index.html')
+    .pipe(gulp.dest('docs/'))
 
-gulp.task('copy', function() {
-  var stream =  gulp.src('index.html')
-    .pipe(gulp.dest('docs/'));
+  return stream
+})
 
-  return stream;
-});
-
-gulp.task('zip', ['addjs'], function() {
-
+gulp.task('zip', ['addjs'], function () {
   var stream = gulp.src('tmp/index.html')
       .pipe(zip('game.zip'))
-      .pipe(gulp.dest('.'));
+      .pipe(gulp.dest('.'))
 
-  return stream;
-});
+  return stream
+})
 
-gulp.task('unzip', ['zip'], function() {
+gulp.task('unzip', ['zip'], function () {
   var stream = gulp.src('game.zip')
       .pipe(unzip())
-      .pipe(gulp.dest('.'));
+      .pipe(gulp.dest('.'))
 
-  return stream;
-});
+  return stream
+})
 
-
-gulp.task('clean', ['unzip'], function() {
+gulp.task('clean', ['unzip'], function () {
   var stream = gulp.src('tmp/')
-        .pipe(rimraf());
+        .pipe(rimraf())
 
+  return stream
+})
 
-  return stream;
-});
+gulp.task('report', ['clean'], function () {
+  const stat = fs.statSync('game.zip')
+  const limit = 1024 * 13
+  const size = stat.size
+  const remaining = limit - size
+  const percentage = (remaining / limit) * 100
 
-gulp.task('report', ['clean'], function() {
-  var stat = fs.statSync('game.zip'),
-      limit = 1024 * 13,
-      size = stat.size,
-      remaining = limit - size,
-      percentage = (remaining / limit) * 100;
+  console.log('\n\n-------------')
+  console.log('BYTES USED: ' + stat.size)
+  console.log('BYTES REMAINING: ' + remaining)
+  console.log(percentage.toFixed(2) + '%')
+  console.log('-------------\n\n')
+})
 
-  percentage = Math.round(percentage * 100) / 100
+gulp.task('encode', function () {
+  const files = fs.readdirSync('./a')
+  let gifs = []
+  let n
+  let parts
+  let base64
 
-  console.log('\n\n-------------');
-  console.log('BYTES USED: ' + stat.size);
-  console.log('BYTES REMAINING: ' + remaining);
-  console.log(percentage +'%');
-  console.log('-------------\n\n');
-});
-
-
-gulp.task('encode', function()  {
-  var files = fs.readdirSync('./a'),
-      gifs = [],
-      n, parts, base64;
-
-  for ( n in files) {
+  for (n in files) {
     if (files[n].indexOf('.gif') !== -1) {
-      gifs.push(files[n]);
+      gifs.push(files[n])
     }
   }
 
   for (n = 0; n < gifs.length; n += 1) {
-
-    fs.readFileSync('.a/'+gifs[n], function(err, data) {
-     console.log(err, data);
-    });
-    parts = gifs[n].split('.');
-    console.log(parts[0], gifs[n], base64);
+    fs.readFileSync('.a/' + gifs[n], function (err, data) {
+      console.log(err, data)
+    })
+    parts = gifs[n].split('.')
+    console.log(parts[0], gifs[n], base64)
   }
-
-});
+})
