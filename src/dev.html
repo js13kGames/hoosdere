@@ -9,23 +9,57 @@
         height: 100vh;
         background: black;
         overflow: hidden;
+        animation-duration: 2s;
+        animation-name: walking;
+        animation-iteration-count: infinite;
+        color: white;
+        display: flex;
+        justify-content: center;
+        -ms-align-items: center;
+        align-items: center;
       }
-      body::after, body::before {
+      .light {
+        position: relative;
+        width: 100vw;
+      }
+      .light::after, .light::before {
         content: '.,..,..,.';
         color: white;
         font-size: 29vh;
-        filter: blur(38px);
+        filter: blur(5vh);
         letter-spacing: 60px;
         position: absolute;
-        top: 50%;
-        transform: translate(-50%, -75%);
-        left: 50%;
+        width: 100vw;
+        text-align: center;
       }
-      body::after {
+      .light::after {
         letter-spacing: 15px;
+      }
+      @keyframes walking {
+        0% {
+          transform: translate(15px, 0);
+        }
+
+        37% {
+          transform: translate(0, -15px);
+        }
+
+        50% {
+          transform: translate(-15px, 0);
+        }
+
+        87% {
+          transform: translate(0, -15px);
+        }
+
+        100% {
+          transform: translate(15px, 0);
+        }
       }
     </style>
   </head>
-  <body></body>
+  <body>
+    <div class="light"></div>
+  </body>
   <script src="src/hoosdere.js" />
 </html>
