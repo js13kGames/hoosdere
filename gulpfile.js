@@ -10,9 +10,10 @@ const webserver = require('gulp-webserver')
 const uglify = require('gulp-uglify')
 const unzip = require('gulp-unzip')
 const zip = require('gulp-zip')
+const babel = require('gulp-babel')
+
 const excludeMin = []
 const config = { js: [] }
-const mainHTML = 'src/index.html'
 
 gulp.task('build', ['initbuild', 'jsmin', 'addjs', 'copy', 'zip', 'unzip', 'clean', 'report'])
 
@@ -42,7 +43,7 @@ gulp.task('initbuild', function () {
   gulp.src('index.html').pipe(rimraf())
 
   // get a list of all js scripts from our dev file
-  html = fs.readFileSync(mainHTML, 'utf-8', function (e, data) {
+  html = fs.readFileSync('src/dev.html', 'utf-8', function (e, data) {
     return data
   })
 
@@ -61,6 +62,7 @@ gulp.task('initbuild', function () {
 
 gulp.task('jsmin', ['initbuild'], function () {
   var stream = gulp.src(config.js)
+    .pipe(babel({presets: ['env']}))
     .pipe(concat('g.js'))
     .pipe(uglify())
     .pipe(gulp.dest('.'))
@@ -82,9 +84,9 @@ gulp.task('addjs', ['jsmin'], function () {
       return data
     })
   }
-  console.log(extraJS.length, 'OK', excludeMin)
+  // console.log(extraJS.length, 'OK', excludeMin)
 
-  var stream = gulp.src('dev.html')
+  var stream = gulp.src('src/dev.html')
       .pipe(replace(/<.*?script.*?>.*?<\/.*?script.*?>/igm, ''))
       .pipe(replace(/<\/body>/igm, '<script>' + extraJS + ' ' + js + '</script></body>'))
       .pipe(htmlmin({collapseWhitespace: true}))
@@ -96,7 +98,7 @@ gulp.task('addjs', ['jsmin'], function () {
 
 gulp.task('copy', function () {
   var stream = gulp.src('index.html')
-    .pipe(gulp.dest('docs/'))
+    .pipe(gulp.dest('dist/'))
 
   return stream
 })
@@ -118,8 +120,7 @@ gulp.task('unzip', ['zip'], function () {
 })
 
 gulp.task('clean', ['unzip'], function () {
-  var stream = gulp.src('tmp/')
-        .pipe(rimraf())
+  var stream = gulp.src('tmp/').pipe(rimraf())
 
   return stream
 })
@@ -131,11 +132,17 @@ gulp.task('report', ['clean'], function () {
   const remaining = limit - size
   const percentage = (remaining / limit) * 100
 
-  console.log('\n\n-------------')
-  console.log('BYTES USED: ' + stat.size)
-  console.log('BYTES REMAINING: ' + remaining)
-  console.log(percentage.toFixed(2) + '%')
-  console.log('-------------\n\n')
+  const usedKb = stat.size / 1024
+  const usedBar = '#'.repeat(Math.ceil(usedKb * 2))
+
+  const remKb = remaining / 1024
+  const remBar = '-'.repeat(Math.ceil(remKb * 2))
+
+  console.log(`
+  [${usedBar}${remBar}]
+  ${usedKb.toFixed(2)}KB of ${remKb.toFixed(2)}KB used
+  (${percentage.toFixed(2)}%)
+  `)
 })
 
 gulp.task('encode', function () {
