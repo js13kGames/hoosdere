@@ -52,7 +52,7 @@ gulp.task('initbuild', function () {
   $('script').each(function () {
     src = $(this).attr('src')
     if (excludeMin.indexOf(src) === -1) {
-      js.push(src)
+      js.push(`src/${src}`)
     }
   })
 
@@ -140,7 +140,7 @@ gulp.task('report', ['clean'], function () {
 
   console.log(`
   [${usedBar}${remBar}]
-  ${usedKb.toFixed(2)}KB of ${remKb.toFixed(2)}KB used
+  ${usedKb.toFixed(2)}KB of 13KB used
   (${percentage.toFixed(2)}%)
   `)
 })
