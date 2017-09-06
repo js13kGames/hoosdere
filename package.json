@@ -4,7 +4,8 @@
     "prepush": "npm test",
     "test": "standard",
     "fix": "standard --fix",
-    "build": "gulp build"
+    "build": "gulp build",
+    "serve": "gulp serve"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

@@ -109,13 +109,28 @@
         margin-left: 23vw;
         animation-delay: 0.1s;
       }
+      .status {
+        position: fixed;
+        color: white;
+        top: 0;
+        left: 0;
+        padding: 5px;
+        font-family: mono;
+        max-height: 6em;
+        overflow-y: auto;
+        width: 25%;
+        font-size: 0.8em;
+      }
     </style>
   </head>
   <body>
     <div class="light"></div>
     <div class="hands"></div>
+    <div class="status"></div>
   </body>
   <script type="text/javascript" src="TinyMusic.min.js"></script>
+  <script type="text/javascript" src="scheduler.js"></script>
   <script type="text/javascript" src="sounds.js"></script>
   <script type="text/javascript" src="animation.js"></script>
+  <script type="text/javascript" src="status.js"></script>
 </html>
