@@ -8,4 +8,5 @@ const setStatus = text => {
 (function () {
   statusBar = document.querySelector('.status')
   setStatus('game started')
+  setStatus('press [w] to sprint')
 })()

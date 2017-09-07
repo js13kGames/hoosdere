@@ -4,6 +4,9 @@
     <meta charset="utf-8"/>
     <style>
       body {
+        --animation-pace: 1500ms;
+      }
+      body {
         margin: 0px;
         padding: 0px;
         height: 100vh;
@@ -30,7 +33,7 @@
         top: -25vh;
         width: 100vw;
         text-align: center;
-        animation-duration: 1.5s;
+        animation-duration: var(--animation-pace);
         animation-name: walking;
         animation-iteration-count: infinite;
       }
@@ -96,7 +99,7 @@
       .hands:after {
         display: inline-block;
         animation-name: hands;
-        animation-duration: 1.5s;
+        animation-duration: var(--animation-pace);
         animation-iteration-count: infinite;
       }
       .hands:before {
@@ -128,7 +131,7 @@
     <div class="hands"></div>
     <div class="status"></div>
   </body>
-  <script type="text/javascript" src="TinyMusic.min.js"></script>
+  <script type="text/javascript" src="jsfxr.js"></script>
   <script type="text/javascript" src="scheduler.js"></script>
   <script type="text/javascript" src="sounds.js"></script>
   <script type="text/javascript" src="animation.js"></script>

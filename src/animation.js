@@ -2,7 +2,12 @@
 
 const step = 150
 let light
+let hands
 let direction = 0
+
+function setAnimationSpeed (speed) {
+  document.body.style.setProperty("--animation-pace", speed)
+}
 
 function updateDirection () {
   light.style.setProperty('transform', `translateX(${direction}px)`)
@@ -14,6 +19,7 @@ function setDirection (d) {
 
 (function () {
   light = document.querySelector('.light')
+  hands = document.querySelector('.hands')
 
   let lastMousePostion = false
 
