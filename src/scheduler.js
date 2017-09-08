@@ -1,29 +1,32 @@
-// This script keeps the game pace
-let pace = 750 // ms
-let interval
-const s = []
+/* global animationManager */
 
-// Add an event to the scheduler
-window.schedule = (cb) => {
-  s.push(cb)
-}
+/**
+ * @author github.com/lopis
+ */
+function Scheduler() {
 
-window.setPace = p => {
-  if (p != pace) {
-    pace = p
-    clearInterval(interval)
-    startScheduler()
-    setStatus('Pace set to ' + p)
-    setAnimationSpeed(`${pace*2}ms`)
+  const schedule = []
+  let pace = 750
+
+  // Change the pace of the game
+  this.setPace = p => {
+    if (p != pace) {
+      pace = p
+      clearInterval(interval)
+      startScheduler()
+      setStatus('Pace set to ' + p)
+      animationManager.setAnimationSpeed(`${pace*2}ms`)
+    }
   }
+
+  // Schedule new task
+  this.add = (cb) => {
+    s.push(cb)
+  }
+
+  statusBar = document.querySelector('.status')
+  setStatus('game started')
+  setStatus('press [w] to sprint')
 }
 
-function startScheduler () {
-  interval = window.setInterval(() => {
-    s.map(s => s())
-  }, pace)
-}
-
-(function () {
-  startScheduler()
-})()
+window.scheduler = new Scheduler();
