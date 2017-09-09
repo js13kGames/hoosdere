@@ -9,7 +9,7 @@
     "serve": "yarn gulp serve",
     "report": "yarn gulp report",
     "webpack": "./node_modules/webpack/bin/webpack.js",
-    "dev": "yarn webpack --config webpack.config.js -- --watch"
+    "dev": "yarn webpack-dev-server --open --hot"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -18,6 +18,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "cheerio": "^1.0.0-rc.2",
+    "css-loader": "^0.28.7",
     "gulp": "^3.9.1",
     "gulp-closure-compiler": "^0.4.0",
     "gulp-concat": "^2.6.1",
@@ -30,9 +31,12 @@
     "gulp-unzip": "^0.2.0",
     "gulp-webserver": "^0.9.1",
     "gulp-zip": "^4.0.0",
+    "html-webpack-plugin": "^2.30.1",
     "husky": "^0.14.3",
     "jshint": "^2.9.5",
     "standard": "^10.0.3",
-    "webpack": "^3.5.6"
+    "style-loader": "^0.18.2",
+    "webpack": "^3.5.6",
+    "webpack-dev-server": "^2.7.1"
   }
 }

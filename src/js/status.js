@@ -12,7 +12,7 @@ function StatusBar() {
    */
   this.setStatus = (text) => {
     const d = new Date()
-    const timestamp = `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
+    const timestamp = `[${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}]`
     statusBar.innerHTML += `${timestamp} ${text} <br/>`
     statusBar.scrollTop = getStatusBar().scrollHeight
   }

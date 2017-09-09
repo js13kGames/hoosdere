@@ -1,10 +1,11 @@
 const path = require('path')
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const config = {
-  entry: './src/index.js',
+  entry: './src/js/index.js',
   output: {
-    path: path.resolve(__dirname),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'g.js',
     sourceMapFilename: 'g.js.map'
   },
@@ -13,20 +14,37 @@ const config = {
       {
         test: /\.js$/,
         include: [
-          path.resolve(__dirname, 'src'),
+          path.resolve(__dirname, 'src/js'),
         ],
         loader: 'babel-loader'
       },
+      {
+        test: /\.css$/,
+        include: [
+          path.resolve(__dirname, 'src/css'),
+        ],
+        use: [ 'style-loader', 'css-loader' ]
+      }
     ]
   },
+  devtool: 'cheap-module-source-map',
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
-      mangle: !!process.env.APP_ENV,
-      compress: !!process.env.APP_ENV,
+      mangle: true,
+      compress: true,
       warnings: false,
       sourceMap: true
+    }),
+    new HtmlWebpackPlugin({
+      title: 'hoosdere',
+      template: 'src/template.html'
     })
-  ]
+  ],
+  devServer: {
+    contentBase: path.resolve(__dirname, 'dist'),
+    compress: true,
+    port: 9000
+  }
 }
 
 module.exports = config
