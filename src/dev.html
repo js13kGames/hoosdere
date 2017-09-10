@@ -116,8 +116,8 @@
       .status {
         position: fixed;
         color: white;
-        top: 0;
-        left: 0;
+        top: 0px;
+        left: 0px;
         padding: 5px;
         font-family: mono;
         max-height: 6em;
@@ -125,16 +125,29 @@
         width: 25%;
         font-size: 0.8em;
       }
+      canvas.map {
+        position: fixed;
+        bottom: 15px;
+        right: 15px;
+        height: 150px;
+        width: 150px;
+        background: #1b2e17;
+        border-radius: 50%;
+        box-shadow: 0 0 10px 10px #1b2e17;
+      }
     </style>
   </head>
   <body>
     <div class="light"></div>
     <div class="hands"></div>
     <div class="status"></div>
+    <canvas class="map" height="150" width="150"></canvas>
   </body>
   <script type="text/javascript" src="jsfxr.min.js"></script>
   <script type="text/javascript" src="scheduler.js"></script>
-  <script type="text/javascript" src="sounds.js"></script>
   <script type="text/javascript" src="animation.js"></script>
   <script type="text/javascript" src="status.js"></script>
+  <script type="text/javascript" src="sounds.js"></script>
+  <script type="text/javascript" src="beast.js"></script>
+  <script type="text/javascript" src="map.js"></script>
 </html>

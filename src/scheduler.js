@@ -1,4 +1,4 @@
-/* global sb, am */
+/* global sb, am, bm */
 
 // This script keeps the game pace
 function Scheduler () {
@@ -20,12 +20,19 @@ function Scheduler () {
       this.pace = p
       clearInterval(this.interval)
       this.init()
-      sb.setStatus('Pace set to ' + p)
+      sb.add('Pace set to ' + p)
       am.setAnimationSpeed(`${this.pace * 2}ms`)
     }
   }
-
-  this.init()
 }
 
 window.sch = new Scheduler()
+
+this.setTimeout(() => {
+  window.sch.init()
+  window.bm.create()
+  window.bm.create()
+  window.bm.create()
+  window.bm.create()
+  window.bm.create()
+}, 1000)
