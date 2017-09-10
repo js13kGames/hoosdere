@@ -1,25 +1,33 @@
-/* global schedule, setStatus */
+/* global sch, sb */
 
 const step = 150
 let light
-let hands
 let direction = 0
 
-function setAnimationSpeed (speed) {
-  document.body.style.setProperty("--animation-pace", speed)
-}
+function AnimationManager () {
+  this.setAnimationSpeed = (speed) => {
+    document.body.style.setProperty('--animation-pace', speed)
+  }
 
-function updateDirection () {
-  light.style.setProperty('transform', `translateX(${direction}px)`)
-}
+  this.stopRunning = () => {
+    sch.setPace(750)
+    document.body.style.setProperty('transform', 'scale(1.0)')
+  }
 
-function setDirection (d) {
-  direction = d
-}
+  this.startRunning = () => {
+    sch.setPace(350)
+    document.body.style.setProperty('transform', 'scale(1.1)')
+  }
 
-(function () {
+  this.updateDirection = () => {
+    light.style.setProperty('transform', `translateX(${direction}px)`)
+  }
+
+  this.setDirection = (d) => {
+    direction = d
+  }
+
   light = document.querySelector('.light')
-  hands = document.querySelector('.hands')
 
   let lastMousePostion = false
 
@@ -27,24 +35,26 @@ function setDirection (d) {
     lastMousePostion = e.clientX
   }
 
-  schedule(() => {
+  sch.add(() => {
     if (lastMousePostion !== false) {
       const width = window.innerWidth
       if (lastMousePostion > width * 0.6) {
-        setDirection(direction - step)
+        this.setDirection(direction - step)
       } else if (lastMousePostion < width * 0.4) {
-        setDirection(direction + step)
+        this.setDirection(direction + step)
       }
       if (direction > width * 2 || direction < -width * 2) {
         light.classList.remove('light')
-        setDirection(-direction)
-        updateDirection()
-        setStatus('Wraped around')
+        this.setDirection(-direction)
+        this.updateDirection()
+        sb.add('Wraped around')
       }
       light.classList.add('light')
-      updateDirection()
-      setStatus(`Position: ${direction}`)
+      this.updateDirection()
+      sb.add(`Position: ${direction}`)
       lastMousePostion = false
     }
   })
-})()
+}
+
+window.am = new AnimationManager()

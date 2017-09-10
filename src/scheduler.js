@@ -1,3 +1,5 @@
+/* global sb, am */
+
 // This script keeps the game pace
 let pace = 750 // ms
 let interval
@@ -8,22 +10,24 @@ window.schedule = (cb) => {
   s.push(cb)
 }
 
-window.setPace = p => {
-  if (p != pace) {
-    pace = p
-    clearInterval(interval)
-    startScheduler()
-    setStatus('Pace set to ' + p)
-    setAnimationSpeed(`${pace*2}ms`)
+function Scheduler () {
+  this.init = () => {
+    interval = window.setInterval(() => {
+      s.map(s => s())
+    }, pace)
   }
+
+  this.setPace = p => {
+    if (p !== pace) {
+      pace = p
+      clearInterval(interval)
+      this.init()
+      sb.setStatus('Pace set to ' + p)
+      am.setAnimationSpeed(`${pace * 2}ms`)
+    }
+  }
+
+  this.init()
 }
 
-function startScheduler () {
-  interval = window.setInterval(() => {
-    s.map(s => s())
-  }, pace)
-}
-
-(function () {
-  startScheduler()
-})()
+window.sch = new Scheduler()

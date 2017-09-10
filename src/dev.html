@@ -17,6 +17,7 @@
         justify-content: center;
         -ms-align-items: center;
         align-items: center;
+        transition: transform 1s ease 0.1s;
       }
       .light {
         position: relative;
@@ -36,11 +37,11 @@
         animation-duration: var(--animation-pace);
         animation-name: walking;
         animation-iteration-count: infinite;
+        animation-delay: var(--animation-pace);
       }
       .light::after {
         content: '.-.|.-\||\\||/..-';
         letter-spacing: 15px;
-        animation-delay: 0.2s;
       }
       @keyframes walking {
         0% {
@@ -131,7 +132,7 @@
     <div class="hands"></div>
     <div class="status"></div>
   </body>
-  <script type="text/javascript" src="jsfxr.js"></script>
+  <script type="text/javascript" src="jsfxr.min.js"></script>
   <script type="text/javascript" src="scheduler.js"></script>
   <script type="text/javascript" src="sounds.js"></script>
   <script type="text/javascript" src="animation.js"></script>

@@ -5,8 +5,19 @@ const setStatus = text => {
   statusBar.scrollTop = statusBar.scrollHeight
 }
 
-(function () {
-  statusBar = document.querySelector('.status')
+function StatusBar () {
+  this.getStatusBar = () => {
+    return this.statusBar || (this.statusBar = document.querySelector('.status'))
+  }
+
+  this.add = text => {
+    const d = new Date()
+    this.getStatusBar().innerHTML += `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} ${text} <br/>`
+    this.getStatusBar().scrollTop = statusBar.scrollHeight
+  }
+
   setStatus('game started')
   setStatus('press [w] to sprint')
-})()
+}
+
+window.sb = new StatusBar()
