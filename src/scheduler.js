@@ -1,4 +1,4 @@
-/* global sch, sb, am, bm */
+/* global sch, sb, am, bm, map */
 
 // This script keeps the game pace
 function Scheduler () {
@@ -32,4 +32,6 @@ this.setTimeout(() => {
   sch.init()
   bm.create()
   bm.create()
+  map.init()
+  sch.add(map.updatePlayerPos)
 }, 1000)

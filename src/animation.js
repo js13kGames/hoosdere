@@ -1,4 +1,4 @@
-/* global sch, sb */
+/* global sch, sb, map */
 
 const step = 150
 let light
@@ -60,8 +60,8 @@ function AnimationManager () {
     }
 
     if (hasMoved) {
-      const width = window.innerWidth
-      if (direction > width * 2 || direction < -width * 2) {
+      if (map.player.direction > Math.PI ||
+          map.player.direction < -Math.PI) {
         light.classList.remove('light')
         this.setDirection(-direction)
         this.updateDirection()

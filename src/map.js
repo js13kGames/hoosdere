@@ -9,7 +9,8 @@ window.mapWidth = 150
 function Map () {
   this.player = {
     x: 75,
-    y: 140
+    y: 140,
+    dir: Math.PI
   }
   this.exit = {
     x: 75,
@@ -18,6 +19,15 @@ function Map () {
 
   this.getCanvas = () => {
     return this.canvas || document.querySelector('canvas.map')
+  }
+
+  const STEP_SIZE = 2
+  this.updatePlayerPos = () => {
+    const t = this.player.dir
+    const dx = STEP_SIZE * Math.sin(t)
+    const dy = STEP_SIZE * Math.cos(t)
+    this.player.x += dx
+    this.player.y += dy
   }
 
   function drawDot (ctx, color, x, y) {
@@ -29,21 +39,22 @@ function Map () {
     ctx.stroke()
   }
 
-  function clearCanvas (ctx) {
+  this.clearCanvas = (ctx) => {
     ctx.clearRect(0, 0, 150, 150)
   }
 
   this.draw = () => {
-    if (this.getCanvas().getContext) {
-      const ctx = this.getCanvas().getContext('2d')
+    const ctx = this.getCanvas().getContext('2d')
+    drawDot(ctx, 'white', this.player.x, this.player.y)
+  }
 
-      clearCanvas(ctx)
-      drawDot(ctx, 'white', this.player.x, this.player.y)
-      drawDot(ctx, 'yellow', this.exit.x, this.exit.y)
-      bm.getBeasts().map(b => {
-        drawDot(ctx, 'red', b.x, b.y)
-      })
-    }
+  this.init = () => {
+    const ctx = this.getCanvas().getContext('2d')
+    drawDot(ctx, 'white', this.player.x, this.player.y)
+    drawDot(ctx, 'yellow', this.exit.x, this.exit.y)
+    bm.getBeasts().map(b => {
+      drawDot(ctx, 'red', b.x, b.y)
+    })
   }
 
   sch.add(this.draw)
