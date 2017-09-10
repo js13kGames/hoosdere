@@ -12,6 +12,7 @@ function StatusBar () {
 
   this.add('game started')
   this.add('press [w] to sprint')
+  this.add('[<][>] or [a][d] to move')
 }
 
 window.sb = new StatusBar()

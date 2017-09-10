@@ -20,7 +20,7 @@ function Map () {
     return this.canvas || document.querySelector('canvas.map')
   }
 
-  function drawDot(ctx, color, x, y) {
+  function drawDot (ctx, color, x, y) {
     ctx.beginPath()
     ctx.fillStyle = color
     ctx.strokeStyle = color
@@ -29,13 +29,13 @@ function Map () {
     ctx.stroke()
   }
 
-  function clearCanvas(ctx) {
+  function clearCanvas (ctx) {
     ctx.clearRect(0, 0, 150, 150)
   }
 
   this.draw = () => {
     if (this.getCanvas().getContext) {
-      var ctx = this.getCanvas().getContext('2d');
+      const ctx = this.getCanvas().getContext('2d')
 
       clearCanvas(ctx)
       drawDot(ctx, 'white', this.player.x, this.player.y)

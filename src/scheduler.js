@@ -1,4 +1,4 @@
-/* global sb, am, bm */
+/* global sch, sb, am, bm */
 
 // This script keeps the game pace
 function Scheduler () {
@@ -29,10 +29,7 @@ function Scheduler () {
 window.sch = new Scheduler()
 
 this.setTimeout(() => {
-  window.sch.init()
-  window.bm.create()
-  window.bm.create()
-  window.bm.create()
-  window.bm.create()
-  window.bm.create()
+  sch.init()
+  bm.create()
+  bm.create()
 }, 1000)

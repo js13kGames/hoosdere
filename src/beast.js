@@ -1,4 +1,4 @@
-/* global map, sch, sb */
+/* global sb */
 
 /**
  * The beast plays scary sounds and moves towards the
@@ -8,7 +8,7 @@ function Beast () {
     this.x = (Math.random() * window.mapWidth).toFixed(0)
     this.y = (Math.random() * window.mapHeight).toFixed(0)
     this.direction = Math.random() * Math.PI * 2
-    sb.add(`Beast appear near (${this.x},${this.y})`)
+    sb.add(`Beast appeared near (${this.x},${this.y})`)
   }
   this.playSound = () => {
 
