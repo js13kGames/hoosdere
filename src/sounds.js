@@ -1,4 +1,4 @@
-/* global am, schedule, jsfxr */
+/* global am, sch, jsfxr */
 
 const steps = [
   '3,0.29,0.01,,0.25,0.5409,,0.5205,-0.1883,0.2219,,0.0382,0.1761,0.0054,0.0915,0.1099,-0.1205,-0.0348,0.9878,0.8539,0.232,0.0817,0.0354,0.32',
@@ -94,15 +94,15 @@ function playBeastSound (isClose) {
 let isRunning = false
 let nextBeastTimer = 5
 function SoundManager () {
-  schedule(() => {
+  sch.add(() => {
     playStepSound()
   })
-  schedule(() => {
+  sch.add(() => {
     if (backgroundSemaphore-- <= 0) {
       startNewBackgroundSound()
     }
   })
-  schedule(() => {
+  sch.add(() => {
     if (nextBeastTimer-- <= 0) {
       playBeastSound()
       nextBeastTimer = 3 + Math.random() * 10

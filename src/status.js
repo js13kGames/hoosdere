@@ -1,9 +1,3 @@
-let statusBar
-const setStatus = text => {
-  const d = new Date()
-  statusBar.innerHTML += `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} ${text} <br/>`
-  statusBar.scrollTop = statusBar.scrollHeight
-}
 
 function StatusBar () {
   this.getStatusBar = () => {
@@ -13,11 +7,11 @@ function StatusBar () {
   this.add = text => {
     const d = new Date()
     this.getStatusBar().innerHTML += `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} ${text} <br/>`
-    this.getStatusBar().scrollTop = statusBar.scrollHeight
+    this.getStatusBar().scrollTop = this.getStatusBar().scrollHeight
   }
 
-  setStatus('game started')
-  setStatus('press [w] to sprint')
+  this.add('game started')
+  this.add('press [w] to sprint')
 }
 
 window.sb = new StatusBar()
