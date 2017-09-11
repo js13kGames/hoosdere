@@ -30,7 +30,7 @@ function Map () {
     return this.canvas || document.querySelector('canvas.map')
   }
 
-  const STEP_SIZE = 1
+  const STEP_SIZE = 2
   this.updatePlayerPos = () => {
     const t = this.player.dir
     const dx = STEP_SIZE * Math.sin(t)
@@ -39,6 +39,23 @@ function Map () {
     this.player.y += dy
 
     am.setBkgPosition(-dx * am.bkgStep)
+  }
+
+  const BEAST_STEP_SIZE = 1
+  this.updateBeastPos = (beast) => {
+    // Angle from the beast in the direction of the player
+    let t = Math.atan(
+      (beast.y - this.player.y) / (beast.x - this.player.x)
+    )
+    if (this.player.x > beast.x) {
+      t += Math.PI
+    }
+    const dx = BEAST_STEP_SIZE * Math.cos(t)
+    const dy = BEAST_STEP_SIZE * Math.sin(t)
+    beast.x -= dx
+    beast.y -= dy
+
+    return beast
   }
 
   function drawDot (ctx, color, x, y) {
@@ -56,7 +73,9 @@ function Map () {
 
   this.draw = () => {
     const ctx = this.getCanvas().getContext('2d')
+    this.clearCanvas(ctx)
     drawDot(ctx, 'white', this.player.x, this.player.y)
+    drawDot(ctx, 'red', bm.getBeasts()[0].x, bm.getBeasts()[0].y)
   }
 
   this.init = () => {
@@ -70,7 +89,6 @@ function Map () {
     sch.add(this.updatePlayerPos)
     sch.add(this.draw)
   }
-
 }
 
 window.map = new Map()

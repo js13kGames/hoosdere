@@ -30,7 +30,8 @@ window.sch = new Scheduler()
 
 this.setTimeout(() => {
   sch.init()
+  // bm.create()
   bm.create()
-  bm.create()
+  bm.init()
   map.init()
 }, 1000)
