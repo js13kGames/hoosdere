@@ -1,6 +1,7 @@
 /* global sch, bm */
 window.mapHeight = 150
 window.mapWidth = 150
+const rotationStepSize = Math.PI / 24
 
 /**
  * Size of the map and location
@@ -17,11 +18,19 @@ function Map () {
     y: 5
   }
 
+  this.movePlayerRight = () => {
+    this.player.dir -= rotationStepSize
+  }
+
+  this.movePlayerLeft = () => {
+    this.player.dir += rotationStepSize
+  }
+
   this.getCanvas = () => {
     return this.canvas || document.querySelector('canvas.map')
   }
 
-  const STEP_SIZE = 2
+  const STEP_SIZE = 1
   this.updatePlayerPos = () => {
     const t = this.player.dir
     const dx = STEP_SIZE * Math.sin(t)
@@ -34,7 +43,7 @@ function Map () {
     ctx.beginPath()
     ctx.fillStyle = color
     ctx.strokeStyle = color
-    ctx.arc(x, y, 2, 0, Math.PI * 2, true)
+    ctx.arc(x, y, 1, 0, Math.PI * 2, true)
     ctx.fill()
     ctx.stroke()
   }

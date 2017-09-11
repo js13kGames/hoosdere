@@ -3,9 +3,13 @@
   <head>
     <meta charset="utf-8"/>
     <style>
-      body {
+      html {
         --animation-pace: 1500ms;
         --background-color: #05100B;
+        --light-color: #F8F0C5;
+      }
+      html {
+        background: var(--light-color);
       }
       html, body {
         margin: 0px;
@@ -13,6 +17,7 @@
         height: 100vh;
         width: 100vw;
         overflow: hidden;
+        user-select: none;
       }
       body {
         background: var(--background-color);
@@ -32,7 +37,6 @@
         font-size: 15vh;
         height: 60px;
         filter: blur(1px);
-        fill: #0B0A05;
         filter: blur(2px);
         letter-spacing: 60px;
         position: absolute;
@@ -43,6 +47,9 @@
         animation-name: walking;
         animation-iteration-count: infinite;
         animation-delay: var(--animation-pace);
+      }
+      .light > svg stop {
+        stop-color: var(--light-color);
       }
       .light > svg:last-child {
         animation-delay: 0.05s;
@@ -102,6 +109,7 @@
         font-weight: bold;
         font-family: serif;
         text-align: center;
+        transition: bottom 0.5s ease-out;
       }
       .hands > svg {
         height: 50vh;
@@ -146,10 +154,10 @@
       <svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" height="200" width="380" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 379.99999 200" xmlns:dc="http://purl.org/dc/elements/1.1/">
        <defs>
         <radialGradient id="radialGradient5335" gradientUnits="userSpaceOnUse" cy="554.06" cx="401.95" gradientTransform="matrix(1.1006 -1.0416e-8 0 .51437 -40.428 269.07)" r="164.05">
-         <stop stop-color="#F8F0C5" offset="0"/>
-         <stop stop-color="#F8F0C5" offset=".17543"/>
-         <stop stop-color="#F8F0C5" stop-opacity=".23529" offset=".87716"/>
-         <stop stop-color="#F8F0C5" stop-opacity="0" offset="1"/>
+         <stop offset="0"/>
+         <stop offset=".17543"/>
+         <stop stop-opacity=".23529" offset=".87716"/>
+         <stop stop-opacity="0" offset="1"/>
         </radialGradient>
        </defs>
        <g transform="translate(-215.27 -437.5)">

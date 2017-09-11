@@ -1,8 +1,7 @@
 /* global sch, sb, map */
 
 const step = 150
-let light
-let direction = 0
+let bkgPosition = 0
 
 function AnimationManager () {
   this.setAnimationSpeed = (speed) => {
@@ -11,23 +10,41 @@ function AnimationManager () {
 
   this.stopRunning = () => {
     sch.setPace(750)
-    document.body.style.setProperty('transform', 'scale(1.0)')
+    this.getLight().style.setProperty('transform', `scale(1.0) translateX(${bkgPosition}px)`)
+    this.getHands().style.setProperty('bottom', '-5%')
   }
 
   this.startRunning = () => {
     sch.setPace(350)
-    document.body.style.setProperty('transform', 'scale(1.1)')
+    this.getLight().style.setProperty('transform', `scale(1.3) translateX(${bkgPosition}px)`)
+    this.getHands().style.setProperty('bottom', '-25%')
   }
 
   this.updateDirection = () => {
-    light.style.setProperty('transform', `translateX(${direction}px)`)
+    this.getLight().style.setProperty('transform', `translateX(${bkgPosition}px)`)
   }
 
-  this.setDirection = (d) => {
-    direction = d
+  this.setBkgPosition = (p) => {
+    bkgPosition = p
   }
 
-  light = document.querySelector('.light')
+  this.moveRight = () => {
+    this.setBkgPosition(bkgPosition - step)
+    map.movePlayerRight()
+  }
+
+  this.moveLeft = () => {
+    this.setBkgPosition(bkgPosition + step)
+    map.movePlayerLeft()
+  }
+
+  this.getLight = () => {
+    return this.light || (this.light = document.querySelector('.light'))
+  }
+
+  this.getHands = () => {
+    return this.hands || (this.hands = document.querySelector('.hands'))
+  }
 
   const keyPresses = {}
 
@@ -51,25 +68,25 @@ function AnimationManager () {
   sch.add(() => {
     let hasMoved = false
     if (keyPresses[KEY_D] || keyPresses[KEY_RGT]) {
-      this.setDirection(direction - step)
+      this.moveRight()
       hasMoved = true
     }
     if (keyPresses[KEY_A] || keyPresses[KEY_LFT]) {
-      this.setDirection(direction + step)
+      this.moveLeft()
       hasMoved = true
     }
 
     if (hasMoved) {
-      if (map.player.direction > Math.PI ||
-          map.player.direction < -Math.PI) {
-        light.classList.remove('light')
-        this.setDirection(-direction)
+      if (map.player.dir > 2 * Math.PI ||
+          map.player.dir < 0) {
+        this.getLight().classList.remove('light')
+        this.setBkgPosition(-bkgPosition)
         this.updateDirection()
         sb.add('Wraped around')
       }
-      light.classList.add('light')
+      this.getLight().classList.add('light')
       this.updateDirection()
-      sb.add(`Position: ${direction}`)
+      sb.add(`Direction: ${map.player.dir.toFixed(1)}rad`)
     }
   })
 }
