@@ -33,5 +33,4 @@ this.setTimeout(() => {
   bm.create()
   bm.create()
   map.init()
-  sch.add(map.updatePlayerPos)
 }, 1000)

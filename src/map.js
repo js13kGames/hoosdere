@@ -1,4 +1,4 @@
-/* global sch, bm */
+/* global sch, bm, am */
 window.mapHeight = 150
 window.mapWidth = 150
 const rotationStepSize = Math.PI / 24
@@ -37,6 +37,8 @@ function Map () {
     const dy = STEP_SIZE * Math.cos(t)
     this.player.x += dx
     this.player.y += dy
+
+    am.setBkgPosition(-dx * am.bkgStep)
   }
 
   function drawDot (ctx, color, x, y) {
@@ -64,9 +66,11 @@ function Map () {
     bm.getBeasts().map(b => {
       drawDot(ctx, 'red', b.x, b.y)
     })
+
+    sch.add(this.updatePlayerPos)
+    sch.add(this.draw)
   }
 
-  sch.add(this.draw)
 }
 
 window.map = new Map()

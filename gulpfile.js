@@ -130,7 +130,7 @@ gulp.task('report', ['clean'], function () {
   const limit = 1024 * 13
   const size = stat.size
   const remaining = limit - size
-  const percentage = (remaining / limit) * 100
+  const percentage = (size / limit) * 100
 
   const usedKb = stat.size / 1024
   const usedBar = '#'.repeat(Math.ceil(usedKb * 2))

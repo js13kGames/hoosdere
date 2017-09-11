@@ -1,40 +1,40 @@
 /* global sch, sb, map */
 
-const step = 150
-let bkgPosition = 0
-
 function AnimationManager () {
+  this.bkgStep = 150
+  this.bkgPosition = 0
+
   this.setAnimationSpeed = (speed) => {
     document.body.style.setProperty('--animation-pace', speed)
   }
 
   this.stopRunning = () => {
     sch.setPace(750)
-    this.getLight().style.setProperty('transform', `scale(1.0) translateX(${bkgPosition}px)`)
+    this.getLight().style.setProperty('transform', `scale(1.0) translateX(${this.bkgPosition}px)`)
     this.getHands().style.setProperty('bottom', '-5%')
   }
 
   this.startRunning = () => {
     sch.setPace(350)
-    this.getLight().style.setProperty('transform', `scale(1.3) translateX(${bkgPosition}px)`)
+    this.getLight().style.setProperty('transform', `scale(1.3) translateX(${this.bkgPosition}px)`)
     this.getHands().style.setProperty('bottom', '-25%')
   }
 
   this.updateDirection = () => {
-    this.getLight().style.setProperty('transform', `translateX(${bkgPosition}px)`)
+    this.getLight().style.setProperty('transform', `translateX(${this.bkgPosition}px)`)
   }
 
   this.setBkgPosition = (p) => {
-    bkgPosition = p
+    this.bkgPosition += p
   }
 
   this.moveRight = () => {
-    this.setBkgPosition(bkgPosition - step)
+    this.setBkgPosition(-this.bkgStep)
     map.movePlayerRight()
   }
 
   this.moveLeft = () => {
-    this.setBkgPosition(bkgPosition + step)
+    this.setBkgPosition(this.bkgStep)
     map.movePlayerLeft()
   }
 
@@ -80,7 +80,7 @@ function AnimationManager () {
       if (map.player.dir > 2 * Math.PI ||
           map.player.dir < 0) {
         this.getLight().classList.remove('light')
-        this.setBkgPosition(-bkgPosition)
+        this.setBkgPosition(-2 * this.bkgPosition)
         this.updateDirection()
         sb.add('Wraped around')
       }
