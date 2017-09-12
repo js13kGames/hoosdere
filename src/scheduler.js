@@ -16,6 +16,10 @@ function Scheduler () {
   }
 
   this.setPace = p => {
+    if (p <= 0) {
+      clearInterval(this.interval)
+      sb.add('The END')
+    }
     if (p !== this.pace) {
       this.pace = p
       clearInterval(this.interval)
@@ -30,8 +34,11 @@ window.sch = new Scheduler()
 
 this.setTimeout(() => {
   sch.init()
-  // bm.create()
   bm.create()
+  // bm.create()
+  // bm.create()
+  // bm.create()
+  // bm.create()
   bm.init()
   map.init()
 }, 1000)

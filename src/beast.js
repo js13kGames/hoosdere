@@ -5,10 +5,10 @@
  */
 function Beast () {
   this.init = () => {
-    this.x = 75 // Math.random() * window.mapWidth
-    this.y = 75 // Math.random() * window.mapHeight
+    this.x = Math.random() * window.mapWidth
+    this.y = Math.random() * window.mapHeight
     this.direction = Math.random() * Math.PI * 2
-    sb.add(`Beast appeared near (${this.x},${this.y})`)
+    sb.add(`Beast appeared near (${this.x.toFixed(1)},${this.y.toFixed(1)})`)
   }
   this.playSound = () => {
 

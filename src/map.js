@@ -30,7 +30,7 @@ function Map () {
     return this.canvas || document.querySelector('canvas.map')
   }
 
-  const STEP_SIZE = 2
+  const STEP_SIZE = 1
   this.updatePlayerPos = () => {
     const t = this.player.dir
     const dx = STEP_SIZE * Math.sin(t)
@@ -58,6 +58,22 @@ function Map () {
     return beast
   }
 
+  // Check if any of the beasts caught the player
+  const MIN_DISTANCE = 5
+  this.detectBeastPlayerCollision = () => {
+    bm.getBeasts().map(b => {
+      const dx = b.x - this.player.x
+      const dy = b.y - this.player.y
+      const distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))
+      sb.add(`distance: ${distance}`)
+      if (distance < MIN_DISTANCE) {
+        // KILL
+        sb.add('They caught you')
+        sch.setPace(0)
+      }
+    })
+  }
+
   function drawDot (ctx, color, x, y) {
     ctx.beginPath()
     ctx.fillStyle = color
@@ -75,7 +91,10 @@ function Map () {
     const ctx = this.getCanvas().getContext('2d')
     this.clearCanvas(ctx)
     drawDot(ctx, 'white', this.player.x, this.player.y)
-    drawDot(ctx, 'red', bm.getBeasts()[0].x, bm.getBeasts()[0].y)
+    drawDot(ctx, 'yellow', this.exit.x, this.exit.y)
+    bm.getBeasts().map(b => {
+      drawDot(ctx, 'red', b.x, b.y)
+    })
   }
 
   this.init = () => {
@@ -88,6 +107,7 @@ function Map () {
 
     sch.add(this.updatePlayerPos)
     sch.add(this.draw)
+    sch.add(this.detectBeastPlayerCollision)
   }
 }
 
