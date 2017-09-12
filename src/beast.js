@@ -27,7 +27,7 @@ function BeastManager () {
   this.getBeasts = () => this.beasts
 
   this.updateBeasts = () => {
-    this.beasts[0] = map.updateBeastPos(this.beasts[0])
+    this.beasts.map(map.updateBeastPos)
   }
 
   this.init = () => {

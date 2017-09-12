@@ -1,4 +1,4 @@
-/* global sch, bm, am */
+/* global sch, bm, am, sb */
 window.mapHeight = 150
 window.mapWidth = 150
 const rotationStepSize = Math.PI / 24
@@ -30,7 +30,7 @@ function Map () {
     return this.canvas || document.querySelector('canvas.map')
   }
 
-  const STEP_SIZE = 1
+  const STEP_SIZE = 2
   this.updatePlayerPos = () => {
     const t = this.player.dir
     const dx = STEP_SIZE * Math.sin(t)
@@ -58,20 +58,33 @@ function Map () {
     return beast
   }
 
+  function areColliding (a, b, theresold) {
+    const dx = b.x - a.x
+    const dy = b.y - a.y
+    const distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))
+    return distance < theresold
+  }
+
   // Check if any of the beasts caught the player
-  const MIN_DISTANCE = 5
+  const MIN_BEAST_DISTANCE = 5
   this.detectBeastPlayerCollision = () => {
     bm.getBeasts().map(b => {
-      const dx = b.x - this.player.x
-      const dy = b.y - this.player.y
-      const distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))
-      sb.add(`distance: ${distance}`)
-      if (distance < MIN_DISTANCE) {
+      if (areColliding(b, this.player, MIN_BEAST_DISTANCE)) {
         // KILL
         sb.add('They caught you')
         sch.setPace(0)
       }
     })
+  }
+
+  // Check if any of the beasts caught the player
+  const MIN_EXIT_DISTANCE = 5
+  this.detectExitPlayerCollision = () => {
+    if (areColliding(this.exit, this.player, MIN_EXIT_DISTANCE)) {
+      // You are... free?
+      sb.add('You are free... for now')
+      sch.setPace(0)
+    }
   }
 
   function drawDot (ctx, color, x, y) {
@@ -108,6 +121,7 @@ function Map () {
     sch.add(this.updatePlayerPos)
     sch.add(this.draw)
     sch.add(this.detectBeastPlayerCollision)
+    sch.add(this.detectExitPlayerCollision)
   }
 }
 
