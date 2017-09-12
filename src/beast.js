@@ -1,4 +1,4 @@
-/* global sb, map, sch */
+/* global sb, map, sch, sm */
 
 /**
  * The beast plays scary sounds and moves towards the
@@ -7,11 +7,18 @@ function Beast () {
   this.init = () => {
     this.x = Math.random() * window.mapWidth
     this.y = Math.random() * window.mapHeight
-    this.direction = Math.random() * Math.PI * 2
+    this.soundRadius = 0
+    this.dir = 0
     sb.add(`Beast appeared near (${this.x.toFixed(1)},${this.y.toFixed(1)})`)
-  }
-  this.playSound = () => {
 
+    window.setTimeout(this.playSound, Math.random() * 5000)
+  }
+
+  this.playSound = () => {
+    sm.playBeastSound(this.dir)
+    this.soundRadius = 8
+
+    window.setTimeout(this.playSound, Math.random() * 10000)
   }
 
   this.init()

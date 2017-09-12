@@ -86,26 +86,19 @@ function playStepSound () {
   footSideBalance = -footSideBalance
 }
 
-function playBeastSound (isClose) {
-  const balance = Math.random() * 2 - 1
-  playString((isClose ? beast2 : beast1)[parseInt(Math.random() * 3)], balance)
-}
-
 let isRunning = false
-let nextBeastTimer = 5
 function SoundManager () {
+  this.playBeastSound = (dir, isClose) => {
+    const balance = -dir * 2
+    playString((isClose ? beast2 : beast1)[parseInt(Math.random() * 3)], balance)
+  }
+
   sch.add(() => {
     playStepSound()
   })
   sch.add(() => {
     if (backgroundSemaphore-- <= 0) {
       startNewBackgroundSound()
-    }
-  })
-  sch.add(() => {
-    if (nextBeastTimer-- <= 0) {
-      playBeastSound()
-      nextBeastTimer = 3 + Math.random() * 10
     }
   })
 
@@ -125,4 +118,4 @@ function SoundManager () {
   }
 }
 
-window.soundManager = new SoundManager()
+window.sm = new SoundManager()

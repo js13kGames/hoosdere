@@ -54,6 +54,7 @@ function Map () {
     const dy = BEAST_STEP_SIZE * Math.sin(t)
     beast.x -= dx
     beast.y -= dy
+    beast.dir = this.player.dir - t
 
     return beast
   }
@@ -87,12 +88,12 @@ function Map () {
     }
   }
 
-  function drawDot (ctx, color, x, y) {
+  function drawDot (ctx, color, x, y, radius = 1, fill = true) {
     ctx.beginPath()
     ctx.fillStyle = color
     ctx.strokeStyle = color
-    ctx.arc(x, y, 1, 0, Math.PI * 2, true)
-    ctx.fill()
+    ctx.arc(x, y, radius, 0, Math.PI * 2, true)
+    fill && ctx.fill()
     ctx.stroke()
   }
 
@@ -106,7 +107,9 @@ function Map () {
     drawDot(ctx, 'white', this.player.x, this.player.y)
     drawDot(ctx, 'yellow', this.exit.x, this.exit.y)
     bm.getBeasts().map(b => {
-      drawDot(ctx, 'red', b.x, b.y)
+      if (b.soundRadius > 0) {
+        drawDot(ctx, 'red', b.x, b.y, b.soundRadius--, false)
+      }
     })
   }
 
@@ -114,9 +117,6 @@ function Map () {
     const ctx = this.getCanvas().getContext('2d')
     drawDot(ctx, 'white', this.player.x, this.player.y)
     drawDot(ctx, 'yellow', this.exit.x, this.exit.y)
-    bm.getBeasts().map(b => {
-      drawDot(ctx, 'red', b.x, b.y)
-    })
 
     sch.add(this.updatePlayerPos)
     sch.add(this.draw)
